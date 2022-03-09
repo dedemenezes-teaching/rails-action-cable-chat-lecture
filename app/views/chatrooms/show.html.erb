@@ -1,0 +1,25 @@
+<!-- app/views/chatrooms/show.html.erb -->
+<div class="container chatroom"
+     data-controller="batch-subscription"
+     data-batch-subscription-chatroom-id-value="<%= @chatroom.id %>">
+  <h1>#<%= @chatroom.name %></h1>
+
+  <div class="messages" data-batch-subscription-target='messages'>
+    <% @chatroom.messages.each do |message| %>
+      <%= render 'messages/message', message: message %>
+    <% end %>
+  </div>
+
+  <%= simple_form_for([@chatroom, @message],
+                      remote: true,
+                      html: { class: 'd-flex',
+                              data: { batch_subscription_target: 'form'}
+                            }) do |f|
+  %>
+    <%= f.input :content,
+                 label: false,
+                 placeholder: "Message....",
+                 wrapper_html: { class: 'flex-grow-1' } %>
+    <%= f.submit "Send", class: 'btn btn-primary' %>
+  <% end %>
+</div>
